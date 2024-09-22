@@ -20,11 +20,13 @@
         <v-row v-if="!searchActive">
           <v-col v-for="movie in initialMovies" :key="movie.imdbID" cols="12" sm="6" md="4">
             <v-card>
-              <v-img :src="movie.Poster" height="400"></v-img>
+              <router-link :to="'/movie/' + movie.imdbID">
+                <v-img :src="movie.Poster" height="400"></v-img>
+              </router-link>
+
               <v-card-title>{{ movie.Title }}</v-card-title>
               <v-card-subtitle>{{ movie.Year }}</v-card-subtitle>
-              <v-card-actions>
-                <v-btn :to="'/movie/' + movie.imdbID" text color="primary">Details</v-btn>
+              <v-card-actions> <v-btn :to="'/movie/' + movie.imdbID" text color="primary">Details</v-btn>
                 <v-btn @click="toggleFavorite(movie)" :color="isFavorite(movie) ? 'red' : 'primary'">
                   {{ isFavorite(movie) ? 'Remove from Favorites' : 'Add to Favorites' }}
                 </v-btn>
@@ -36,7 +38,10 @@
         <v-row v-if="searchActive">
           <v-col v-for="movie in movies" :key="movie.imdbID" cols="12" sm="6" md="4">
             <v-card>
-              <v-img :src="movie.Poster" height="200"></v-img>
+              <router-link :to="'/movie/' + movie.imdbID">
+                <v-img :src="movie.Poster" height="400"></v-img>
+              </router-link>
+
               <v-card-title>{{ movie.Title }}</v-card-title>
               <v-card-subtitle>{{ movie.Year }}</v-card-subtitle>
               <v-card-actions>
@@ -55,12 +60,12 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-// import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import env from '../env';
 
 const search = ref('');
 const movies = ref([]);
-// const router = useRouter();
+const router = useRouter();
 const searchActive = ref(false);
 const initialMovies = ref([]);
 const showMovies = ref(true);
