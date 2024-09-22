@@ -10,7 +10,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/https://github.com/mortada335/CinemaApp.git',
+
   plugins: [
     Vue({
       template: { transformAssetUrls }
