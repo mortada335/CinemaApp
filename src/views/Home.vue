@@ -22,12 +22,11 @@
               </router-link>
 
               <v-card-title>{{ movie.Title }}</v-card-title>
-              <v-card-subtitle>{{ movie.Year }}
-                <v-btn class="mx-2 my-2" size="small" @click="toggleFavorite(movie)"
-                  :color="isFavorite(movie) ? 'red' : 'primary'">
-                  {{ isFavorite(movie) ? 'Remove from Favorite' : 'Add to Favorites' }}
-                </v-btn>
-              </v-card-subtitle>
+              <v-card-text>{{ movie.Year }}</v-card-text>
+              <v-btn class="mx-2 my-2" size="small" @click="toggleFavorite(movie)"
+                :color="isFavorite(movie) ? 'red' : 'primary'">
+                {{ isFavorite(movie) ? 'Remove from Favorite' : 'Add to Favorites' }}
+              </v-btn>
             </v-card>
           </v-col>
         </v-row>

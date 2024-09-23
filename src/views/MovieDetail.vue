@@ -9,24 +9,26 @@
               </h3>
 
             </v-card-title>
-            <v-card-subtitle class="mb-4 text-gray-600">
+            <v-card-subtitle class="mb-2 text-gray-600">
               <p class="mb-1">Year: {{ movie.Year }}</p>
             </v-card-subtitle>
-            <v-img :src="movie.Poster" alt="Movie Poster" class="featured-img mb-4" height="500" width="300">
+            <v-img :src="movie.Poster" alt="Movie Poster" class="featured-img mb-2 ml-3" height="500" width="300">
             </v-img>
 
             <v-card-text>
               <p class="text-gray-700 text-base leading-relaxed">{{ movie.Plot }}</p>
-              <!-- </v-card-text> -->
+            </v-card-text>
+            <v-card-text>
               <div v-if="trailerUrl">
                 <iframe width="100%" height="315" :src="trailerUrl" frameborder="0" allowfullscreen></iframe>
               </div>
-              <v-btn size="small" class="mx-1 mt-2" color="primary" @click="fetchTrailer">Show Trailer</v-btn>
+              <v-btn size="small" class="mx-1" color="primary" @click="fetchTrailer">Show Trailer</v-btn>
 
-              <v-btn class="mx-1 mt-2" size="small" @click="toggleFavorite(movie)"
+              <v-btn class="mx-1 " size="small" @click="toggleFavorite(movie)"
                 :color="isFavorite(movie) ? 'red' : 'primary'">
                 {{ isFavorite(movie) ? 'Remove from Favorites' : 'Add to Favorites' }}
               </v-btn>
+
             </v-card-text>
           </v-card>
         </v-col>
