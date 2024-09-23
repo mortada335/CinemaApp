@@ -22,13 +22,12 @@
               </router-link>
 
               <v-card-title>{{ movie.Title }}</v-card-title>
-              <v-card-subtitle>{{ movie.Year }}</v-card-subtitle>
-              <v-card-actions>
-                <v-btn :to="'/movie/' + movie.imdbID" text color="primary">Details</v-btn>
-                <v-btn @click="toggleFavorite(movie)" :color="isFavorite(movie) ? 'red' : 'primary'">
-                  {{ isFavorite(movie) ? 'Remove from Favorites' : 'Add to Favorites' }}
+              <v-card-subtitle>{{ movie.Year }}
+                <v-btn class="mx-2 my-2" size="small" @click="toggleFavorite(movie)"
+                  :color="isFavorite(movie) ? 'red' : 'primary'">
+                  {{ isFavorite(movie) ? 'Remove from Favorite' : 'Add to Favorites' }}
                 </v-btn>
-              </v-card-actions>
+              </v-card-subtitle>
             </v-card>
           </v-col>
         </v-row>
@@ -42,13 +41,13 @@
               </router-link>
 
               <v-card-title>{{ movie.Title }}</v-card-title>
-              <v-card-subtitle>{{ movie.Year }}</v-card-subtitle>
-              <v-card-actions>
-                <v-btn :to="'/movie/' + movie.imdbID" text color="primary">Details</v-btn>
-                <v-btn @click="toggleFavorite(movie)" :color="isFavorite(movie) ? 'red' : 'primary'">
-                  {{ isFavorite(movie) ? 'Remove from Favorites' : 'Add to Favorites' }}
+              <v-card-subtitle>{{ movie.Year }}
+
+                <v-btn class="mx-2 my-2" size="small" @click="toggleFavorite(movie)"
+                  :color="isFavorite(movie) ? 'red' : 'primary'">
+                  {{ isFavorite(movie) ? 'Remove from Favorite' : 'Add to Favorites' }}
                 </v-btn>
-              </v-card-actions>
+              </v-card-subtitle>
             </v-card>
           </v-col>
         </v-row>
