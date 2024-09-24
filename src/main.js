@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 import { createVuetify } from 'vuetify';
 import 'vuetify/styles';
+import 'vuetify/dist/vuetify.min.css'
 
 const vuetify = createVuetify(
   {

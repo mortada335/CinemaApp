@@ -18,7 +18,7 @@
             <v-card-text>
               <p class="text-gray-700 text-base leading-relaxed">{{ movie.Plot }}</p>
             </v-card-text>
-            <v-card-text>
+            <v-card-subtitle>
               <div v-if="trailerUrl">
                 <iframe width="100%" height="315" :src="trailerUrl" frameborder="0" allowfullscreen></iframe>
               </div>
@@ -29,7 +29,7 @@
                 {{ isFavorite(movie) ? 'Remove from Favorites' : 'Add to Favorites' }}
               </v-btn>
 
-            </v-card-text>
+            </v-card-subtitle>
           </v-card>
         </v-col>
       </v-row>
@@ -75,16 +75,18 @@ onMounted(() => {
   fetchMovieDetails()
 })
 const toggleFavorite = (movie) => {
-  const user = JSON.parse(localStorage.getItem('currentUser'));
+  let user = JSON.parse(localStorage.getItem('currentUser'));
   if (user) {
-    let favorites = user.favorites || [];
-    const index = favorites.findIndex(fav => fav.imdbID === movie.imdbID);
-    if (index > -1) {
-      favorites.splice(index, 1);
-    } else {
-      favorites.push(movie);
+    if (!user.favorites) {
+      user.favorites = [];
     }
-    user.favorites = favorites;
+
+    const index = user.favorites.findIndex(fav => fav.imdbID === movie.imdbID);
+    if (index > -1) {
+      user.favorites.splice(index, 1);
+    } else {
+      user.favorites.push(movie);
+    }
     localStorage.setItem('currentUser', JSON.stringify(user));
   } else {
     alert('Please log in to manage favorites');
@@ -93,6 +95,10 @@ const toggleFavorite = (movie) => {
 
 const isFavorite = (movie) => {
   const user = JSON.parse(localStorage.getItem('currentUser'));
-  return user ? user.favorites.some(fav => fav.imdbID === movie.imdbID) : false;
+  if (!user || !Array.isArray(user.favorites)) {
+    return false;
+  }
+
+  return user.favorites.some(fav => fav.imdbID === movie.imdbID);
 };
 </script>

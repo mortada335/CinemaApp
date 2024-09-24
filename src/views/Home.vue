@@ -22,11 +22,14 @@
               </router-link>
 
               <v-card-title>{{ movie.Title }}</v-card-title>
-              <v-card-text>{{ movie.Year }}</v-card-text>
-              <v-btn class="mx-2 my-2" size="small" @click="toggleFavorite(movie)"
-                :color="isFavorite(movie) ? 'red' : 'primary'">
-                {{ isFavorite(movie) ? 'Remove from Favorite' : 'Add to Favorites' }}
-              </v-btn>
+              <v-card-subtitle>{{ movie.Year }}</v-card-subtitle>
+              <v-spacer></v-spacer>
+              <v-card-subtitle>
+                <v-btn class=" my-2 " size="small" @click="toggleFavorite(movie)"
+                  :color="isFavorite(movie) ? 'red' : 'primary'">
+                  {{ isFavorite(movie) ? 'Remove from Favorite' : 'Add to Favorites' }}
+                </v-btn>
+              </v-card-subtitle>
             </v-card>
           </v-col>
         </v-row>
@@ -102,7 +105,7 @@ const debounce = (fn, delay) => {
   };
 };
 
-const debouncedSearchMovies = debounce(searchMovies, 500);
+// const debouncedSearchMovies = debounce(searchMovies, 500);
 
 const getUser = () => {
   return JSON.parse(localStorage.getItem('currentUser'));
