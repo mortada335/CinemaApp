@@ -55,50 +55,44 @@ const fetchMovieDetails = () => {
 };
 
 const fetchTrailer = () => {
-  const trailerSearchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${encodeURIComponent(movie.value.Title + ' trailer')}&key=AIzaSyCn_aPYeqTQ53w8MmSHcHNGNUhU7LaY-pE`
-
-  fetch(trailerSearchUrl).then(res => res.json()).then(data => {
-    if (data.items.length > 0) {
-      const videoId = data.items[0].id.videoId;
-      trailerUrl.value = `https://www.youtube.com/embed/${videoId}`
-    }
-    else {
-      alert('no trailer available for this movie.')
-    }
-  })
-    .catch(err => {
-      console.log("error fetching trailer:", err);
-    })
+  // Avoid embedding an API key in the client. Open YouTube search in a new tab instead.
+  if (!movie.value || !movie.value.Title) {
+    alert('Movie data not loaded yet.');
+    return;
+  }
+  const query = encodeURIComponent(movie.value.Title + ' trailer');
+  const url = `https://www.youtube.com/results?search_query=${query}`;
+  window.open(url, '_blank');
 };
 
 onMounted(() => {
   fetchMovieDetails()
 })
-const toggleFavorite = (movie) => {
-  let user = JSON.parse(localStorage.getItem('currentUser'));
-  if (user) {
-    if (!user.favorites) {
-      user.favorites = [];
-    }
-
-    const index = user.favorites.findIndex(fav => fav.imdbID === movie.imdbID);
-    if (index > -1) {
-      user.favorites.splice(index, 1);
-    } else {
-      user.favorites.push(movie);
-    }
-    localStorage.setItem('currentUser', JSON.stringify(user));
-  } else {
-    alert('Please log in to manage favorites');
+const getUser = () => {
+  try {
+    return JSON.parse(localStorage.getItem('currentUser'));
+  } catch {
+    return null;
   }
 };
 
-const isFavorite = (movie) => {
-  const user = JSON.parse(localStorage.getItem('currentUser'));
-  if (!user || !Array.isArray(user.favorites)) {
-    return false;
+const toggleFavorite = (movie) => {
+  const user = getUser();
+  if (!user) {
+    alert('Please log in to manage favorites');
+    return;
   }
 
-  return user.favorites.some(fav => fav.imdbID === movie.imdbID);
+  if (!user.favorites) user.favorites = [];
+  const idx = user.favorites.findIndex(f => f.imdbID === movie.imdbID);
+  if (idx > -1) user.favorites.splice(idx, 1);
+  else user.favorites.push(movie);
+  localStorage.setItem('currentUser', JSON.stringify(user));
+};
+
+const isFavorite = (movie) => {
+  const user = getUser();
+  if (!user || !Array.isArray(user.favorites)) return false;
+  return user.favorites.some(f => f.imdbID === movie.imdbID);
 };
 </script>

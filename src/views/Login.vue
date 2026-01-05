@@ -47,11 +47,9 @@ const login = () => {
   const user = users.find(u => u.email === email.value && u.password === password.value);
 
   if (user) {
-
-    localStorage.setItem('currentUser', JSON.stringify({ ...user, isLoggedIn: true }));
-
+    const currentUser = { ...user, isLoggedIn: true, favorites: user.favorites || [] };
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
     checkLoginStatus();
-
     router.push('/');
   } else {
     alert('Invalid email or password');

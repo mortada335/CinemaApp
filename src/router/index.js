@@ -15,10 +15,11 @@ const routes = [
     name: 'Favorites',
     component: Favorites,
     beforeEnter: (to, from, next) => {
-      const user = localStorage.getItem('currentUser');
-      if (user) {
-        next();
-      } else {
+      try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.isLoggedIn) next();
+        else next('/login');
+      } catch {
         next('/login');
       }
     }
