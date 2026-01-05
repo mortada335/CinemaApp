@@ -2,9 +2,9 @@
 <template>
   <v-container>
     <v-row>
-      <v-col v-for="movie in favorites" :key="movie.imdbID" cols="12" sm="6" md="4">
+        <v-col v-for="movie in favorites" :key="movie.imdbID" cols="12" sm="6" md="4">
         <v-card>
-          <v-img :src="movie.Poster" height="200"></v-img>
+            <v-img :src="movie.Poster !== 'N/A' ? movie.Poster : '/placeholder.png'" height="200"></v-img>
           <v-card-title>{{ movie.Title }}</v-card-title>
           <v-card-subtitle>{{ movie.Year }}</v-card-subtitle>
           <v-card-actions>
@@ -19,22 +19,29 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import env from '../env.js';
+import { useRouter } from 'vue-router';
 
 const favorites = ref([]);
+const router = useRouter();
+
+const getUser = () => {
+  try { return JSON.parse(localStorage.getItem('currentUser')); } catch { return null; }
+};
 
 onMounted(() => {
-  const user = JSON.parse(localStorage.getItem('currentUser'));
-  if (user) {
+  const user = getUser();
+  if (user && Array.isArray(user.favorites)) {
     favorites.value = user.favorites;
   } else {
-    alert('You need to log in');
+    // redirect to login if no user
+    router.push('/login');
   }
 });
 
 const removeFavorite = (movie) => {
-  const user = JSON.parse(localStorage.getItem('currentUser'));
-  user.favorites = user.favorites.filter(fav => fav.imdbID !== movie.imdbID);
+  const user = getUser();
+  if (!user) return router.push('/login');
+  user.favorites = (user.favorites || []).filter(fav => fav.imdbID !== movie.imdbID);
   localStorage.setItem('currentUser', JSON.stringify(user));
   favorites.value = user.favorites;
 };
@@ -46,7 +53,9 @@ const addSampleFavorite = () => {
     Poster: 'https://via.placeholder.com/150',
     Year: '2024'
   };
-  const user = JSON.parse(localStorage.getItem('currentUser'));
+  const user = getUser();
+  if (!user) return router.push('/login');
+  user.favorites = user.favorites || [];
   user.favorites.push(sampleMovie);
   localStorage.setItem('currentUser', JSON.stringify(user));
   favorites.value = user.favorites;

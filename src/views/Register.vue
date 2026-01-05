@@ -34,9 +34,17 @@ const router = useRouter();
 
 const register = () => {
   const users = JSON.parse(localStorage.getItem('users')) || [];
-  users.push({ email: email.value, password: password.value });
+  // prevent duplicate registration
+  if (users.some(u => u.email === email.value)) {
+    alert('An account with this email already exists');
+    return;
+  }
+  const newUser = { email: email.value, password: password.value, favorites: [] };
+  users.push(newUser);
   localStorage.setItem('users', JSON.stringify(users));
-  router.push('/login');
+  // optionally log the user in directly
+  localStorage.setItem('currentUser', JSON.stringify({ ...newUser, isLoggedIn: true }));
+  router.push('/');
 };
 
 const goToLogin = () => {

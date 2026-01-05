@@ -31,14 +31,21 @@ onMounted(() => {
 });
 
 const checkLoginStatus = () => {
-  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  isLoggedIn.value = currentUser && currentUser.isLoggedIn;
+  try {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    isLoggedIn.value = !!(currentUser && currentUser.isLoggedIn);
+  } catch {
+    isLoggedIn.value = false;
+  }
 };
 
 watchEffect(() => {
-  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  if (currentUser && currentUser.isLoggedIn !== isLoggedIn.value) {
-    isLoggedIn.value = currentUser.isLoggedIn;
+  try {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const logged = !!(currentUser && currentUser.isLoggedIn);
+    if (logged !== isLoggedIn.value) isLoggedIn.value = logged;
+  } catch {
+    if (isLoggedIn.value) isLoggedIn.value = false;
   }
 });
 
